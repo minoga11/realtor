@@ -99,6 +99,7 @@ class ModelAndValidationTest extends TestCase
                     ],
                     'check_in' => now()->addDays(2)->toDateString(),
                     'check_out' => now()->addDays(5)->toDateString(),
+                    'max_guests' => 2,
                     'price' => 200.00,
                     'currency' => 'USD',
                     'available_units' => 2,
