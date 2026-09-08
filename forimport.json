@@ -1,0 +1,232 @@
+[
+    {
+        "supplier_code": "SUP1",
+        "supplier": "SUP1name",
+        "external_import_id": "import-2026-09-01-001",
+        "sent_at": "2026-09-01T10:00:00Z",
+        "offers": [
+            {
+                "external_id": "offer-1-10001",
+                "property": {
+                    "code": "BCN-0001",
+                    "name": "Apartment near Sagrada Familia",
+                    "city": "Barcelona"
+                },
+                "check_in": "2026-10-10",
+                "check_out": "2026-10-15",
+                "max_guests": 4,
+                "price": 72500,
+                "currency": "EUR",
+                "available_units": 2,
+                "expires_at": "2026-09-10T23:59:59Z"
+            }
+        ]
+    },
+    {
+        "supplier_code": "SUP2",
+        "supplier": "SUP2name",
+        "external_import_id": "import-2026-09-01-002",
+        "sent_at": "2026-09-01T10:30:00Z",
+        "offers": [
+            {
+                "external_id": "offer-2-10002",
+                "property": {
+                    "code": "PAR-0002",
+                    "name": "Studio near Eiffel Tower",
+                    "city": "Paris"
+                },
+                "check_in": "2026-10-12",
+                "check_out": "2026-10-18",
+                "max_guests": 2,
+                "price": 95000,
+                "currency": "EUR",
+                "available_units": 1,
+                "expires_at": "2026-09-12T23:59:59Z"
+            }
+        ]
+    },
+    {
+        "supplier_code": "SUP3",
+        "supplier": "SUP3name",
+        "external_import_id": "import-2026-09-01-003",
+        "sent_at": "2026-09-01T11:00:00Z",
+        "offers": [
+            {
+                "external_id": "offer-3-10003",
+                "property": {
+                    "code": "ROM-0003",
+                    "name": "Colosseum View Suite",
+                    "city": "Rome"
+                },
+                "check_in": "2026-10-15",
+                "check_out": "2026-10-20",
+                "max_guests": 3,
+                "price": 82000,
+                "currency": "EUR",
+                "available_units": 3,
+                "expires_at": "2026-09-15T23:59:59Z"
+            }
+        ]
+    },
+    {
+        "supplier_code": "SUP4",
+        "supplier": "SUP4name",
+        "external_import_id": "import-2026-09-01-004",
+        "sent_at": "2026-09-01T11:30:00Z",
+        "offers": [
+            {
+                "external_id": "offer-4-10004",
+                "property": {
+                    "code": "BER-0004",
+                    "name": "Modern Loft in Mitte",
+                    "city": "Berlin"
+                },
+                "check_in": "2026-10-20",
+                "check_out": "2026-10-25",
+                "max_guests": 2,
+                "price": 64000,
+                "currency": "EUR",
+                "available_units": 4,
+                "expires_at": "2026-09-20T23:59:59Z"
+            }
+        ]
+    },
+    {
+        "supplier_code": "SUP5",
+        "supplier": "SUP5name",
+        "external_import_id": "import-2026-09-01-005",
+        "sent_at": "2026-09-01T12:00:00Z",
+        "offers": [
+            {
+                "external_id": "offer-5-10005",
+                "property": {
+                    "code": "AMS-0005",
+                    "name": "Canal House Apartment",
+                    "city": "Amsterdam"
+                },
+                "check_in": "2026-10-22",
+                "check_out": "2026-10-27",
+                "max_guests": 4,
+                "price": 110000,
+                "currency": "EUR",
+                "available_units": 1,
+                "expires_at": "2026-09-22T23:59:59Z"
+            }
+        ]
+    },
+    {
+        "supplier_code": "SUP6",
+        "supplier": "SUP6name",
+        "external_import_id": "import-2026-09-01-006",
+        "sent_at": "2026-09-01T12:30:00Z",
+        "offers": [
+            {
+                "external_id": "offer-6-10006",
+                "property": {
+                    "code": "VIE-0006",
+                    "name": "Opera District Flat",
+                    "city": "Vienna"
+                },
+                "check_in": "2026-10-25",
+                "check_out": "2026-10-30",
+                "max_guests": 2,
+                "price": 78000,
+                "currency": "EUR",
+                "available_units": 2,
+                "expires_at": "2026-09-25T23:59:59Z"
+            }
+        ]
+    },
+    {
+        "supplier_code": "SUP7",
+        "supplier": "SUP7name",
+        "external_import_id": "import-2026-09-01-007",
+        "sent_at": "2026-09-01T13:00:00Z",
+        "offers": [
+            {
+                "external_id": "offer-7-10007",
+                "property": {
+                    "code": "PRG-0007",
+                    "name": "Old Town Historic Apartment",
+                    "city": "Prague"
+                },
+                "check_in": "2026-11-01",
+                "check_out": "2026-11-05",
+                "max_guests": 3,
+                "price": 55000,
+                "currency": "EUR",
+                "available_units": 5,
+                "expires_at": "2026-10-01T23:59:59Z"
+            }
+        ]
+    },
+    {
+        "supplier_code": "SUP8",
+        "supplier": "SUP8name",
+        "external_import_id": "import-2026-09-01-008",
+        "sent_at": "2026-09-01T13:30:00Z",
+        "offers": [
+            {
+                "external_id": "offer-8-10008",
+                "property": {
+                    "code": "WAR-0008",
+                    "name": "City Center Studio",
+                    "city": "Warsaw"
+                },
+                "check_in": "2026-11-05",
+                "check_out": "2026-11-10",
+                "max_guests": 2,
+                "price": 45000,
+                "currency": "EUR",
+                "available_units": 3,
+                "expires_at": "2026-10-05T23:59:59Z"
+            }
+        ]
+    },
+    {
+        "supplier_code": "SUP9",
+        "supplier": "SUP9name",
+        "external_import_id": "import-2026-09-01-009",
+        "sent_at": "2026-09-01T14:00:00Z",
+        "offers": [
+            {
+                "external_id": "offer-9-10009",
+                "property": {
+                    "code": "BUD-0009",
+                    "name": "Danube Panorama Apartment",
+                    "city": "Budapest"
+                },
+                "check_in": "2026-11-10",
+                "check_out": "2026-11-15",
+                "max_guests": 4,
+                "price": 50000,
+                "currency": "EUR",
+                "available_units": 2,
+                "expires_at": "2026-10-10T23:59:59Z"
+            }
+        ]
+    },
+    {
+        "supplier_code": "SUP10",
+        "supplier": "SUP10name",
+        "external_import_id": "import-2026-09-01-010",
+        "sent_at": "2026-09-01T14:30:00Z",
+        "offers": [
+            {
+                "external_id": "offer-10-10010",
+                "property": {
+                    "code": "KYV-0010",
+                    "name": "Khreshchatyk Luxury Apartment",
+                    "city": "Kyiv"
+                },
+                "check_in": "2026-11-15",
+                "check_out": "2026-11-20",
+                "max_guests": 3,
+                "price": 40000,
+                "currency": "USD",
+                "available_units": 4,
+                "expires_at": "2026-10-15T23:59:59Z"
+            }
+        ]
+    }
+]

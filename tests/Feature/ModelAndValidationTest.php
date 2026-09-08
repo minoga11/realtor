@@ -122,7 +122,7 @@ class ModelAndValidationTest extends TestCase
                 [
                     'external_id' => '',
                     'property' => [
-                        'code' => 'NON_EXISTENT',
+                        'code' => '',
                     ],
                     'check_in' => 'invalid-date',
                     'check_out' => '2026-09-01',

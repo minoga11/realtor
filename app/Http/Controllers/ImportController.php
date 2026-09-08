@@ -11,6 +11,11 @@ use Illuminate\Http\Request;
 
 class ImportController extends Controller
 {
+    public function index(): JsonResponse
+    {
+        return response()->json(Import::with('supplier')->latest()->paginate(15));
+    }
+
     public function store(StoreImportRequest $request): JsonResponse
     {
         $validated = $request->validated();

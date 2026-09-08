@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('offer_id')->constrained();
-            $table->integer('units');
-            $table->string('status');
+            $table->string('client_reference');
+            $table->string('customer_name');
+            $table->string('customer_email');
+            $table->integer('units')->default(1);
+            $table->string('status')->default('confirmed');
             $table->timestamps();
         });
     }

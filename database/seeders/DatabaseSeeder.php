@@ -12,14 +12,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Supplier::firstOrCreate(
-            ['code' => 'supplier-a'],
-            ['name' => 'Supplier A']
-        );
-
-        Supplier::firstOrCreate(
-            ['code' => 'supplier-b'],
-            ['name' => 'Supplier B']
-        );
+        for ($i = 1; $i <= 10; $i++) {
+            Supplier::firstOrCreate(
+                ['code' => "SUP{$i}"],
+                ['name' => "SUP{$i}name"]
+            );
+        }
     }
 }
