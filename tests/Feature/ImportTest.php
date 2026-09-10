@@ -21,7 +21,6 @@ class ImportTest extends TestCase
         Queue::fake();
 
         $supplier = Supplier::create([
-            'code' => 'SUP1',
             'name' => 'Supplier One',
         ]);
 
@@ -29,36 +28,38 @@ class ImportTest extends TestCase
         Property::create(['code' => 'PROP-2', 'name' => 'Property Two', 'city' => 'Lviv']);
 
         $payload = [
-            'supplier_code' => $supplier->code,
-            'external_import_id' => 'EXT-123',
-            'offers' => [
-                [
-                    'external_id' => 'OFF-1',
-                    'property' => [
-                        'code' => 'PROP-1',
+            [
+                'supplier' => $supplier->name,
+                'external_import_id' => 'EXT-123',
+                'offers' => [
+                    [
+                        'external_id' => 'OFF-1',
+                        'property' => [
+                            'code' => 'PROP-1',
+                        ],
+                        'check_in' => '2026-10-01',
+                        'check_out' => '2026-10-05',
+                        'max_guests' => 2,
+                        'price' => 150.50,
+                        'currency' => 'USD',
+                        'available_units' => 2,
+                        'expires_at' => '2026-12-31',
                     ],
-                    'check_in' => '2026-10-01',
-                    'check_out' => '2026-10-05',
-                    'max_guests' => 2,
-                    'price' => 150.50,
-                    'currency' => 'USD',
-                    'available_units' => 2,
-                    'expires_at' => '2026-12-31',
-                ],
-                [
-                    'external_id' => 'OFF-2',
-                    'property' => [
-                        'code' => 'PROP-2',
+                    [
+                        'external_id' => 'OFF-2',
+                        'property' => [
+                            'code' => 'PROP-2',
+                        ],
+                        'check_in' => '2026-10-02',
+                        'check_out' => '2026-10-06',
+                        'max_guests' => 4,
+                        'price' => 200.00,
+                        'currency' => 'USD',
+                        'available_units' => 1,
+                        'expires_at' => '2026-12-31',
                     ],
-                    'check_in' => '2026-10-02',
-                    'check_out' => '2026-10-06',
-                    'max_guests' => 4,
-                    'price' => 200.00,
-                    'currency' => 'USD',
-                    'available_units' => 1,
-                    'expires_at' => '2026-12-31',
                 ],
-            ],
+            ]
         ];
 
         $response = $this->postJson('/api/imports', $payload);
@@ -86,7 +87,6 @@ class ImportTest extends TestCase
     public function test_import_controller_creates_import_record()
     {
         $supplier = Supplier::create([
-            'code' => 'SUP2',
             'name' => 'Supplier Two',
         ]);
 
@@ -98,7 +98,7 @@ class ImportTest extends TestCase
             'processed_offers' => 0,
         ]);
 
-        $this->assertEquals('SUP2', $import->supplier->code);
+        $this->assertEquals('Supplier Two', $import->supplier->name);
         $this->assertEquals('EXT-MANUAL', $import->external_import_id);
         $this->assertEquals('pending', $import->status);
         $this->assertEquals(0, $import->total_offers);
@@ -108,7 +108,6 @@ class ImportTest extends TestCase
     public function test_offer_upsert_logic()
     {
         $supplier = Supplier::create([
-            'code' => 'SUP3',
             'name' => 'Supplier Three',
         ]);
 
@@ -166,7 +165,6 @@ class ImportTest extends TestCase
     public function test_import_processing_logic()
     {
         $supplier = Supplier::create([
-            'code' => 'SUP4',
             'name' => 'Supplier Four',
         ]);
 

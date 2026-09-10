@@ -18,19 +18,40 @@ class ImportController extends Controller
 
     public function store(StoreImportRequest $request): JsonResponse
     {
-        $validated = $request->validated();
 
-        $supplier = Supplier::where('code', $validated['supplier_code'])->firstOrFail();
+        $validatedImports = $request->validated();
+        $createdImports = [];
 
-        $import = Import::create([
-            'supplier_id' => $supplier->id,
-            'external_import_id' => $validated['external_import_id'],
-            'status' => 'pending',
-            'total_offers' => count($validated['offers']),
-            'processed_offers' => 0,
-        ]);
+        foreach ($validatedImports as $importData) {
+            //  dd($importData);
+            $supplier = Supplier::updateOrCreate(
+                ['name' => $importData['supplier']],
+                []
+            );
+            //  dd($request->all());
+            $import = Import::updateOrCreate(
+                [
+                    'supplier_id' => $supplier->id,
+                    'external_import_id' => $importData['external_import_id'],
+                ],
+                [
+                    'sent_at' => $importData['sent_at'] ?? null,
+                    'status' => 'pending',
+                    'total_offers' => count($importData['offers']),
+                    'processed_offers' => 0,
+                ]
+            );
 
-        ProcessImportJob::dispatch($import, $validated['offers']);
+            ProcessImportJob::dispatch($import, $importData['offers']);
+
+            $createdImports[] = [
+                'id' => $import->id,
+                'supplier' => $supplier->name,
+                'external_import_id' => $import->external_import_id,
+                'status' => $import->status,
+                'total_offers' => $import->total_offers,
+            ];
+        }
 
         return response()->json([
             'id' => $import->id,

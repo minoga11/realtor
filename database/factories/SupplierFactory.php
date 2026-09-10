@@ -18,8 +18,7 @@ class SupplierFactory extends Factory
     public function definition(): array
     {
         return [
-            'code' => fake()->unique()->bothify('SUP-###'),
-            'name' => fake()->company(),
+            'name' => fake()->unique()->company(),
         ];
     }
 }

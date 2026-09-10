@@ -17,7 +17,7 @@ class ReservationTest extends TestCase
 
     public function test_successful_booking_via_offer_route()
     {
-        $supplier = Supplier::create(['code' => 'SUP-1', 'name' => 'Supplier']);
+        $supplier = Supplier::create(['name' => 'Supplier']);
         $import = Import::create([
             'supplier_id' => $supplier->id,
             'external_import_id' => 'EXT-1',
@@ -70,7 +70,7 @@ class ReservationTest extends TestCase
 
     public function test_validation_errors_for_required_fields()
     {
-        $supplier = Supplier::create(['code' => 'SUP-1', 'name' => 'Supplier']);
+        $supplier = Supplier::create(['name' => 'Supplier']);
         $import = Import::create([
             'supplier_id' => $supplier->id,
             'external_import_id' => 'EXT-1',
@@ -100,7 +100,7 @@ class ReservationTest extends TestCase
 
     public function test_failed_booking_insufficient_units()
     {
-        $supplier = Supplier::create(['code' => 'SUP-1', 'name' => 'Supplier']);
+        $supplier = Supplier::create(['name' => 'Supplier']);
         $import = Import::create([
             'supplier_id' => $supplier->id,
             'external_import_id' => 'EXT-1',
@@ -135,7 +135,7 @@ class ReservationTest extends TestCase
 
     public function test_concurrency_race_condition_prevention()
     {
-        $supplier = Supplier::create(['code' => 'SUP-1', 'name' => 'Supplier']);
+        $supplier = Supplier::create(['name' => 'Supplier']);
         $import = Import::create([
             'supplier_id' => $supplier->id,
             'external_import_id' => 'EXT-1',

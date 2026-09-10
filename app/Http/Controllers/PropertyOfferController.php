@@ -45,7 +45,7 @@ class PropertyOfferController extends Controller
         $paginator = $query->paginate($perPage);
 
         $propertyIds = $paginator->pluck('id');
-
+        //   DB::enableQueryLog();
         if ($propertyIds->isNotEmpty()) {
             $bestOffers = Offer::query()
                 ->select('offers.*')
@@ -59,13 +59,24 @@ class PropertyOfferController extends Controller
                         ->orWhere('expires_at', '>', $now);
                 })
                 ->whereIn('id', function ($subQ) use ($checkIn, $checkOut, $guests, $now) {
-                    $subQ->select('id')
-                        ->from(DB::raw('(SELECT id, ROW_NUMBER() OVER (PARTITION BY property_id ORDER BY price ASC) as rn FROM offers WHERE check_in <= "' . $checkIn . '" AND check_out >= "' . $checkOut . '" AND max_guests >= ' . $guests . ' AND available_units > 0 AND (expires_at IS NULL OR expires_at > "' . $now . '")) as ranked'))
-                        ->where('rn', 1);
+                    $subQ->select(DB::raw('MIN(id)'))
+                        ->from('offers')
+                        ->where('check_in', '<=', $checkIn)
+                        ->where('check_out', '>=', $checkOut)
+                        ->where('max_guests', '>=', $guests)
+                        ->where('available_units', '>', 0)
+                        ->where(function ($sub) use ($now) {
+                            $sub->whereNull('expires_at')
+                                ->orWhere('expires_at', '>', $now);
+                        })
+                        ->groupBy('property_id');
                 })
                 ->with('supplier')
+
                 ->get()
                 ->keyBy('property_id');
+
+            //  dd(DB::getQueryLog());
 
             $paginator->getCollection()->transform(function ($property) use ($bestOffers) {
                 $offer = $bestOffers->get($property->id);
@@ -75,28 +86,5 @@ class PropertyOfferController extends Controller
         }
 
         return response()->json($paginator);
-    }
-
-    public function cheapestOffers(): JsonResponse
-    {
-        $now = now();
-        DB::enableQueryLog();
-        $offers = Offer::query()
-            ->select('offers.*')
-            ->where('available_units', '>', 0)
-            ->where(function ($query) use ($now) {
-                $query->whereNull('expires_at')
-                    ->orWhere('expires_at', '>', $now);
-            })
-            ->whereIn('id', function ($query) use ($now) {
-                $query->select('id')
-                    ->from(DB::raw('(SELECT id, ROW_NUMBER() OVER (PARTITION BY property_id ORDER BY price ASC) as rn FROM offers WHERE available_units > 0 AND (expires_at IS NULL OR expires_at > "' . $now . '")) as ranked'))
-                    ->where('rn', 1);
-            })
-            ->with(['property', 'supplier'])
-            ->get();
-        dd(DB::getQueryLog());
-
-        return response()->json($offers);
     }
 }

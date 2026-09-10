@@ -14,7 +14,6 @@ class DatabaseSeeder extends Seeder
     {
         for ($i = 1; $i <= 10; $i++) {
             Supplier::firstOrCreate(
-                ['code' => "SUP{$i}"],
                 ['name' => "SUP{$i}name"]
             );
         }

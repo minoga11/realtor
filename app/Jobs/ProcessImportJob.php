@@ -44,7 +44,10 @@ class ProcessImportJob implements ShouldQueue
                 );
 
                 Offer::updateOrCreate(
-                    ['supplier_id' => $this->import->supplier_id, 'external_id' => $offerData['external_id']],
+                    [
+                        'supplier_id' => $this->import->supplier_id,
+                        'external_id' => $offerData['external_id']
+                    ],
                     [
                         'import_id' => $this->import->id,
                         'property_id' => $property->id,
