@@ -1,73 +1,217 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Realtor Property & Import API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Сервіс бекенду на базі Laravel для керування пропозиціями нерухомості, імпортом даних від постачальників та бронюваннями гостей.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Зміст
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. [Вимоги та налаштування](#вимоги-та-налаштування)
+2. [Сіди бази даних (Seeders)](#сіди-бази-даних-seeders)
+3. [Структура імпорту (`forimport.json`)](#структура-імпорту-forimportjson)
+4. [API Ендпоінти та структура запитів](#api-ендпоінти-та-структура-запитів)
+5. [Тестування](#тестування)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Вимоги та налаштування
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Передумови
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **PHP** >= 8.2
+- **Composer**
+- **MySQL** / PostgreSQL / SQLite
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Кроки встановлення
 
-## Laravel Sponsors
+1. **Клонування репозиторію та встановлення залежностей:**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+   ```bash
+   composer install
+   ```
 
-### Premium Partners
+2. **Налаштування файлу середовища:**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
 
-## Concurrency Protection in Reservations
+3. **Налаштування бази даних:**
+   Оновіть дані підключення до бази даних у файлі `.env`:
 
-The reservation system (`POST /api/offers/{offer}/reservations`) implements robust concurrency control to prevent double-booking of the last available unit under simultaneous requests:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=realtor
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
 
-- **Database Transactions (`DB::transaction`)**: Ensures atomicity of reading available units, decrementing inventory, and recording the reservation.
-- **Pessimistic Locking (`lockForUpdate` / `FOR UPDATE`)**: Serializes concurrent requests targeting the same offer row, ensuring that only the first request succeeds while subsequent requests safely detect zero available units and fail.
+4. **Запуск міграцій:**
 
-## Contributing
+   ```bash
+   php artisan migrate
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+5. **Заповнення бази початковими даними (сіди):**
 
-## Code of Conduct
+   ```bash
+   php artisan db:seed
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+6. **Запуск сервера розробки:**
 
-## Security Vulnerabilities
+   ```bash
+   php artisan serve
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## Сіди бази даних (Seeders)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Проєкт містить `DatabaseSeeder`, який автоматично створює стандартних постачальників, необхідних для обробки імпорту пропозицій.
+
+- **`DatabaseSeeder`**: Створює 10 стандартних постачальників (`SUP1name` — `SUP10name`) за допомогою методу `Supplier::firstOrCreate()`.
+
+Для ручного запуску сіадерів:
+
+```bash
+php artisan db:seed
+```
+
+---
+
+## Структура імпорту (`forimport.json`)
+
+Файл `forimport.json` у кореневій директорії слугує прикладом корисного навантаження (payload) для імпорту пропозицій нерухомості від постачальників.
+
+### Формат JSON структури
+
+```json
+[
+    {
+        "supplier": "SUP1name",
+        "external_import_id": "import-2026-09-01-001",
+        "sent_at": "2026-09-01T10:00:00Z",
+        "offers": [
+            {
+                "external_id": "offer-1-10001",
+                "property": {
+                    "code": "BCN-0001",
+                    "name": "Apartment near Sagrada Familia",
+                    "city": "Barcelona"
+                },
+                "check_in": "2026-10-10",
+                "check_out": "2026-10-15",
+                "max_guests": 4,
+                "price": 72500,
+                "currency": "EUR",
+                "available_units": 2,
+                "expires_at": "2026-09-10T23:59:59Z"
+            }
+        ]
+    }
+]
+```
+
+### Опис полів
+
+- `supplier`: Назва постачальника (має відповідати існуючим постачальникам у базі даних).
+- `external_import_id`: Унікальний ідентифікатор пакету імпорту від постачальника.
+- `sent_at`: Мітка часу ISO 8601, коли було відправлено імпорт.
+- `offers`: Масив пропозицій від постачальника.
+  - `external_id`: Унікальний ідентифікатор пропозиції.
+  - `property`: Об'єкт з інформацією про нерухомість (`code`, `name`, `city`).
+  - `check_in` / `check_out`: Дати доступності (`YYYY-MM-DD`).
+  - `max_guests`: Максимальна кількість гостей.
+  - `price`: Ціна в мінімальних одиницях валюти (наприклад, центах).
+  - `currency`: Код валюти (наприклад, `EUR`, `USD`).
+  - `available_units`: Кількість доступних одиниць/номерів.
+  - `expires_at`: Термін дії пропозиції у форматі ISO 8601.
+
+---
+
+## API Ендпоінти та структура запитів
+
+### 1. Імпорти (Imports)
+
+#### Отримати список усіх імпортів
+
+- **URL:** `GET /api/imports`
+- **Опис:** Повертає список усіх оброблених пакетів імпорту.
+
+#### Створити імпорт
+
+- **URL:** `POST /api/imports`
+- **Content-Type:** `application/json`
+- **Структура запиту:**
+
+  ```json
+  {
+      "supplier": "SUP1name",
+      "external_import_id": "import-2026-09-01-001",
+      "sent_at": "2026-09-01T10:00:00Z",
+      "offers": [
+          {
+              "external_id": "offer-1-10001",
+              "property": {
+                  "code": "BCN-0001",
+                  "name": "Apartment near Sagrada Familia",
+                  "city": "Barcelona"
+              },
+              "check_in": "2026-10-10",
+              "check_out": "2026-10-15",
+              "max_guests": 4,
+              "price": 72500,
+              "currency": "EUR",
+              "available_units": 2,
+              "expires_at": "2026-09-10T23:59:59Z"
+          }
+      ]
+  }
+  ```
+
+#### Отримати інформацію про конкретний імпорт
+
+- **URL:** `GET /api/imports/{import}`
+- **Опис:** Отримання детальної інформації про пакет імпорту за його ID.
+
+---
+
+### 2. Нерухомість та пропозиції (Properties & Offers)
+
+#### Список нерухомості / пропозицій
+
+- **URL:** `GET /api/properties`
+- **Опис:** Пошук та фільтрація доступних об'єктів нерухомості та пропозицій.
+
+---
+
+### 3. Бронювання (Reservations)
+
+#### Створити бронювання
+
+- **URL:** `POST /api/reservations` або `POST /api/offers/{offer}/reservations`
+- **Content-Type:** `application/json`
+- **Структура запиту:**
+
+  ```json
+  {
+      "offer_id": 1,
+      "guest_name": "John Doe",
+      "guest_email": "john@example.com",
+      "guests_count": 2
+  }
+  ```
+
+---
+
+## Тестування
+
+Для запуску автоматизованих тестів виконайте:
+
+```bash
+php artisan test
+```
