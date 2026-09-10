@@ -49,6 +49,13 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 - **[byte5](https://byte5.de)**
 - **[OP.GG](https://op.gg)**
 
+## Concurrency Protection in Reservations
+
+The reservation system (`POST /api/offers/{offer}/reservations`) implements robust concurrency control to prevent double-booking of the last available unit under simultaneous requests:
+
+- **Database Transactions (`DB::transaction`)**: Ensures atomicity of reading available units, decrementing inventory, and recording the reservation.
+- **Pessimistic Locking (`lockForUpdate` / `FOR UPDATE`)**: Serializes concurrent requests targeting the same offer row, ensuring that only the first request succeeds while subsequent requests safely detect zero available units and fail.
+
 ## Contributing
 
 Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
